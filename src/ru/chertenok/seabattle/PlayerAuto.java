@@ -183,7 +183,7 @@ public class PlayerAuto extends PlayerBase {
 
             // очищаем временный список и длину
             listTemp.clear();
-            tempLenght.intValue() = 0;
+            tempLenght = 0;
         }
 
 

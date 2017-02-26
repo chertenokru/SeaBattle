@@ -36,8 +36,8 @@ public class PlayerAuto extends PlayerBase {
         if (isFireTrue) {
             return findNextCoordinate();
         } else {
-            //return getRandomCoordinate();
-            return getRandomDiv2Coordinate();
+            return getRandomCoordinate();
+            //return getRandomDiv2Coordinate();
         }
     }
 

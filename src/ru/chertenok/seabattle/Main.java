@@ -119,38 +119,31 @@ public class Main {
     }
 
     private void drawFields() {
-        char s;
-        String s1;
         System.out.println();
         for (int i = 0; i < maxY; i++) {
             if (i == 0) {
                 System.out.println("    1 2  3  4  5  6 7  8 9 10" + "              " + "    1 2  3  4  5  6 7  8 9 10");
                 System.out.println();
             }
-
-            for (int j = 0; j < maxX; j++) {
-                if (j == 0) {
-                    s1 = Integer.toString(i + 1);
-                    if (s1.length() == 1) s1 = " " + s1;
-                    System.out.print(s1 + " ");
-                }
-
-                s = getDrawChar(fieldAuto.getCell(j, i), fieldAuto.isShowShip(), fieldAuto.isShowBlocked());
-                System.out.print(" " + s);
-            }
+            drawLineField(fieldAuto, i);
             System.out.print("              ");
-            for (int j = 0; j < maxX; j++) {
-                if (j == 0) {
-                    s1 = Integer.toString(i + 1);
-                    if (s1.length() == 1) s1 = " " + s1;
-                    System.out.print(s1 + " ");
-                }
-                s = getDrawChar(fieldManual.getCell(j, i), fieldManual.isShowShip(), fieldManual.isShowBlocked());
-                System.out.print(" " + s);
+            drawLineField(fieldManual, i);
+            System.out.println();
+        }
+    }
+
+    private void drawLineField(Field field, int i) {
+        String s1;
+        char s;
+        for (int j = 0; j < maxX; j++) {
+            if (j == 0) {
+                s1 = Integer.toString(i + 1);
+                if (s1.length() == 1) s1 = " " + s1;
+                System.out.print(s1 + " ");
             }
 
-            System.out.println();
-
+            s = getDrawChar(field.getCell(j, i), field.isShowShip(), field.isShowBlocked());
+            System.out.print(" " + s);
         }
     }
 

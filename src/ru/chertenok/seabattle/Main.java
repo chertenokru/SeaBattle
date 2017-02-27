@@ -12,9 +12,9 @@ public class Main {
     private PlayerBase playerManual;
     private PlayerBase playerAuto;
     // кол-во и размеры кораблей
-    int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    int maxX = 10;
-    int maxY = 10;
+    private int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    private int maxX = 10;
+    private int maxY = 10;
 
     private final char CHAR_DRAW_EMPTY = 9617;
     private final char CHAR_DRAW_EMPTY_SHOOT = 9728;
@@ -28,10 +28,10 @@ public class Main {
     }
 
 
-    public void go() {
+    private void go() {
         //создаём объекты
         initGame();
-     //   drawFields();
+        //   drawFields();
         // игровой цикл
         do {
             // ходы игрока пока не промахнется
@@ -86,20 +86,21 @@ public class Main {
                     stringResult = "Убит !";
                     break;
             }
-            player.sendFireResult(result,firePoint);
-            System.out.printf( "%s сходил %d,%d  - %s \n" ,player.getName(),firePoint.x + 1,firePoint.y + 1,stringResult);
+            player.sendFireResult(result, firePoint);
+            System.out.printf("%s сходил %d,%d  - %s \n", player.getName(), firePoint.x + 1, firePoint.y + 1, stringResult);
 
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (Exception e) {
+                System.out.println(e.fillInStackTrace());
             }
 
         } while ((result == Field.SHIP_SHOOT || result == Field.SHIP_FIRED) && !field.isGameOver());
     }
 
     private void initGame() {
-        fieldAuto = CreateAndInitField(false,true);
-        fieldManual = CreateAndInitField(true,true);
+        fieldAuto = CreateAndInitField(false, true);
+        fieldManual = CreateAndInitField(true, true);
         playerAuto = new PlayerAuto(fieldManual);
         playerManual = new PlayerManual(fieldAuto);
         System.out.println("Игра началась !");
@@ -117,7 +118,7 @@ public class Main {
         return field;
     }
 
-    public void drawFields() {
+    private void drawFields() {
         char s;
         String s1;
         System.out.println();

@@ -101,7 +101,7 @@ public class Field {
 
     public void generateNewShipBySize(int size) {
         Random r = new Random();
-        boolean result = true;
+        boolean result;
         Point[] point = new Point[size];
         do {
             // 0 - по оси y
@@ -159,12 +159,10 @@ public class Field {
         for (int i = 0; i < shipCount; i++) {
             if (ships[i].checkFireToShip(x, y)) {
                 cells[x][y] = SHIP_SHOOT;
-                if (ships[i].isShipFired())
-                {
+                if (ships[i].isShipFired()) {
                     drawBlockFieldAroundShip(ships[i]);
                     return SHIP_FIRED;
-                }else
-                {
+                } else {
                     return SHIP_SHOOT;
                 }
             }

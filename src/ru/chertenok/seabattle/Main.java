@@ -12,9 +12,9 @@ public class Main {
     private PlayerBase playerManual;
     private PlayerBase playerAuto;
     // кол-во и размеры кораблей
-    private int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    private int maxX = 10;
-    private int maxY = 10;
+    private final int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    private final int maxX = 10;
+    private final int maxY = 10;
 
     private final char CHAR_DRAW_EMPTY = 9617;
     private final char CHAR_DRAW_EMPTY_SHOOT = 9728;
@@ -151,28 +151,28 @@ public class Main {
         char s = ' ';
         switch (value) {
             case Field.EMPTY:
-                s = 9617;
+                s = CHAR_DRAW_EMPTY;
                 break;
             case Field.EMPTY_BLOCK:
                 if (showBlocked) {
-                    s = 9728;
+                    s = CHAR_DRAW_EMPTY_SHOOT;
                 } else {
-                    s = 2921;
+                    s = CHAR_DRAW_EMPTY;
                 }
                 break;
 
             case Field.EMPTY_SHOOT:
-                s = 9728;
+                s = CHAR_DRAW_EMPTY_SHOOT;
                 break;
             case Field.SHIP:
                 if (showShip) {
-                    s = 9744;
+                    s = CHAR_DRAW_SHIP;
                 } else {
-                    s = 9617;
+                    s = CHAR_DRAW_EMPTY;
                 }
                 break;
             case Field.SHIP_SHOOT:
-                s = 9746;
+                s = CHAR_DRAW_SHIP_SHOOT;
                 break;
 
         }

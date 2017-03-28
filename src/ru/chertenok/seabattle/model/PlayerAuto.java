@@ -1,4 +1,4 @@
-package ru.chertenok.seabattle;
+package ru.chertenok.seabattle.model;
 
 import java.awt.*;
 import java.util.ArrayList;

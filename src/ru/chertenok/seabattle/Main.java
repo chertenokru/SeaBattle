@@ -1,5 +1,9 @@
 package ru.chertenok.seabattle;
 
+import ru.chertenok.seabattle.player.PlayerAuto;
+import ru.chertenok.seabattle.player.PlayerBase;
+import ru.chertenok.seabattle.player.PlayerManual;
+
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
@@ -16,10 +20,15 @@ public class Main {
     private final int maxX = 10;
     private final int maxY = 10;
 
-    private final char CHAR_DRAW_EMPTY = 9617;
-    private final char CHAR_DRAW_EMPTY_SHOOT = 9728;
-    private final char CHAR_DRAW_SHIP = 9744;
-    private final char CHAR_DRAW_SHIP_SHOOT = 9746;
+    //private final char CHAR_DRAW_EMPTY = 9617;
+    //private final char CHAR_DRAW_EMPTY_SHOOT = 9728;
+    //private final char CHAR_DRAW_SHIP = 9744;
+    //private final char CHAR_DRAW_SHIP_SHOOT = 9746;
+
+    private final char CHAR_DRAW_EMPTY = '_';
+    private final char CHAR_DRAW_EMPTY_SHOOT = '.';
+    private final char CHAR_DRAW_SHIP = '@';
+    private final char CHAR_DRAW_SHIP_SHOOT = '#';
 
 
     public static void main(String[] args) {
@@ -122,7 +131,7 @@ public class Main {
         System.out.println();
         for (int i = 0; i < maxY; i++) {
             if (i == 0) {
-                System.out.println("    1 2  3  4  5  6 7  8 9 10" + "              " + "    1 2  3  4  5  6 7  8 9 10");
+                System.out.println("    1 2 3 4 5 6 7 8 9 10" + "              " + "   1 2 3 4 5 6 7 8 9 10");
                 System.out.println();
             }
             drawLineField(fieldAuto, i);

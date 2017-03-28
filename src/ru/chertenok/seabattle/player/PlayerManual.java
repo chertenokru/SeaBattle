@@ -1,4 +1,6 @@
-package ru.chertenok.seabattle;
+package ru.chertenok.seabattle.player;
+
+import ru.chertenok.seabattle.Field;
 
 import java.awt.*;
 import java.util.Scanner;

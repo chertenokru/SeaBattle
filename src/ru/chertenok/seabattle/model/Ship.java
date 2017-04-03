@@ -1,4 +1,4 @@
-package ru.chertenok.seabattle;
+package ru.chertenok.seabattle.model;
 
 import java.awt.*;
 
@@ -6,8 +6,8 @@ import java.awt.*;
  * Created by 13th on 09.02.2017.
  */
 public class Ship {
-    private int firePoint = 0;
     private final ShipCell[] position;
+    private int firePoint = 0;
 
     public Ship(Point[] position) {
         this.position = new ShipCell[position.length];

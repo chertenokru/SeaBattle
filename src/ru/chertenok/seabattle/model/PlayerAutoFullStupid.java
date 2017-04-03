@@ -1,15 +1,12 @@
-package ru.chertenok.seabattle.player;
-
-import ru.chertenok.seabattle.Field;
+package ru.chertenok.seabattle.model;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by 13th on 11.02.2017.
- */
-public class PlayerAuto extends PlayerBase {
+/** Игрок компьютер - рандомный
+ * с функцией добивания  раненого корабля  */
+public class PlayerAutoFullStupid extends PlayerBase {
 
     private static int VECTOR_NONE = 0;
     private static int VECTOR_HOR = 1;
@@ -17,34 +14,47 @@ public class PlayerAuto extends PlayerBase {
     private static int VECTOR_TO_BEGIN = 3;
     private static int VECTOR_TO_END = 4;
 
-    // есть ли ранненый корабль
+    private static Random random = new Random();
+    /** есть ли ранненый корабль */
     private boolean isFireTrue = false;
-    // его посл координаты
+    /** его последние координаты */
     private Point pointFire = null;
-    // направление его расположения
+    /** направление его расположения */
     private int vectorFire = VECTOR_NONE;
 
-    private static Random random = new Random();
 
-
-    public PlayerAuto(Field field) {
+    /** Конструктор
+     * @param field принимает поле на котором будет игра
+     */
+    public PlayerAutoFullStupid(Field field) {
         super(field, field.getSIZE_X(), field.getSIZE_Y());
         name = "Компьютер";
-
     }
 
+    /** Возвращает следующий выстрел компьютера
+     * @return Point - координаты выстрела
+     */
     @Override
     public Point getShootCoordinate() {
+        // есть кого добить?
         if (isFireTrue) {
+            // добиваем
             return findNextCoordinate();
         } else {
+            // ищем случайную координату
             return getRandomCoordinate();
+            // тут будет второе поколение разума... в наследнике скорее всего
             //return getRandomDiv2Coordinate();
         }
     }
 
+    /** Обработка результатов стрельбы,
+     * вызывает игровой цикл, чтоб сообщить результат
+     * @param result Статус выстрела
+     */
     @Override
-    public void sendFireResult(int result, Point coord) {
+    public void sendFireResult(int result) {
+        // если убит, то вырубаем режим добивания
         if (result == Field.SHIP_FIRED) {
             isFireTrue = false;
             vectorFire = VECTOR_NONE;

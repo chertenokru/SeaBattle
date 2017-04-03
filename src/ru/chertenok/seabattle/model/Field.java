@@ -1,4 +1,4 @@
-package ru.chertenok.seabattle;
+package ru.chertenok.seabattle.model;
 
 import java.awt.*;
 import java.util.Random;
@@ -24,6 +24,15 @@ public class Field {
     private boolean showBlocked = false;
     private int shipCount = 0;
 
+
+    public Field(int SIZE_X, int SIZE_Y, int maxShipCount) {
+        this.SIZE_X = SIZE_X;
+        this.SIZE_Y = SIZE_Y;
+        this.MAX_SHIP_COUNT = maxShipCount;
+        cells = new int[SIZE_X][SIZE_Y];
+
+        ships = new Ship[maxShipCount];
+    }
 
     public boolean isShowBlocked() {
         return showBlocked;
@@ -71,16 +80,6 @@ public class Field {
         }
         return result;
     }
-
-    public Field(int SIZE_X, int SIZE_Y, int maxShipCount) {
-        this.SIZE_X = SIZE_X;
-        this.SIZE_Y = SIZE_Y;
-        this.MAX_SHIP_COUNT = maxShipCount;
-        cells = new int[SIZE_X][SIZE_Y];
-
-        ships = new Ship[maxShipCount];
-    }
-
 
     public int getSIZE_X() {
         return SIZE_X;

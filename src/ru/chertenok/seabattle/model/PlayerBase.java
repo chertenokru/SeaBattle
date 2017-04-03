@@ -34,15 +34,21 @@ public abstract class PlayerBase {
         return isCanReturnCoordinate;
     }
 
+    /**
+     * Возвращает имя игрока
+     */
     public String getName() {
         return name;
     }
 
+    /** устанавливает имя игрока */
     public void setName(String name) {
         this.name = name;
     }
 
+    /** возвращает координаты хода, использовать если isCanReturnCoordinate == true*/
     public abstract Point getShootCoordinate();
 
+    /** обратная связь по результату выстрела todo - реализовать слушателем */
     public abstract void sendFireResult(int result);
 }

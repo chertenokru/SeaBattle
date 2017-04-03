@@ -9,6 +9,7 @@ public class PlayerManual extends PlayerBase {
 
     public PlayerManual(Field field) {
         super(field, field.getSIZE_X(), field.getSIZE_Y());
+        // ходить не может
         isCanReturnCoordinate = false;
     }
 

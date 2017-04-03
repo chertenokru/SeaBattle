@@ -17,6 +17,12 @@ public class ConsoleIView implements IViewSeaBattle {
     private final char CHAR_DRAW_EMPTY_SHOOT = 9728;
     private final char CHAR_DRAW_SHIP = 9744;
     private final char CHAR_DRAW_SHIP_SHOOT = 9746;
+
+//    private final char CHAR_DRAW_EMPTY = '_';
+//    private final char CHAR_DRAW_EMPTY_SHOOT = '.';
+//    private final char CHAR_DRAW_SHIP = '@';
+//    private final char CHAR_DRAW_SHIP_SHOOT = '#';
+
     private int maxX;
     private int maxY;
 
@@ -110,7 +116,9 @@ public class ConsoleIView implements IViewSeaBattle {
         return s;
     }
 
-    /** вывод результата хода */
+    /**
+     * вывод результата хода
+     */
     @Override
     public void showResultFire(int result, int x, int y, String playerName) {
         String stringResult = "";
@@ -143,7 +151,7 @@ public class ConsoleIView implements IViewSeaBattle {
     }
 
     @Override
-    public void setFieldSize(int maxX, int MaxY) {
+    public void setFieldSize(int maxX, int maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
     }
@@ -158,7 +166,7 @@ public class ConsoleIView implements IViewSeaBattle {
             res = true;
             try {
                 System.out.println();
-                System.out.print(player.getName() + ", укажите координаты X,Y через запятую ( 1-10,1-10 ):");
+                System.out.println(player.getName() + ", укажите координаты X,Y через запятую ( 1-10,1-10 ):");
                 String[] s = scanner.next().split(",");
                 if (s.length > 1) {
                     x = Integer.parseInt(s[0]) - 1;

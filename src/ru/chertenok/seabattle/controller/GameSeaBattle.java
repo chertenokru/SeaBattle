@@ -10,7 +10,6 @@ import java.awt.*;
 
 
 /**
- * Created by 13th on 28.03.2017.
  */
 public class GameSeaBattle {
 
@@ -25,18 +24,24 @@ public class GameSeaBattle {
     private IViewSeaBattle view;
 
 
+    /**
+     * Конструктор и сразу запускает игровой цикл     *
+     *
+     * @param view принимает ссылку на отрисовщик
+     */
     public GameSeaBattle(IViewSeaBattle view) {
         this.view = view;
-
         initGame();
         startGame();
-
-
     }
 
-    private void startGame() {
-        view.drawFields(fieldManual,fieldAuto);
 
+    /**
+     * игровой цикл
+     */
+    private void startGame() {
+
+        // view.drawFields(fieldAuto, fieldManual);
         // игровой цикл
         do {
             // ходы игрока пока не промахнется
@@ -57,56 +62,85 @@ public class GameSeaBattle {
 
     }
 
+    /**
+     * ход переданного  параметром игрока
+     */
     private void playerTurn(PlayerBase player) {
-        Point firePoint = new Point(0,0);
-        Field field;
+        Point firePoint = new Point(0, 0);
+        // вытаскиваем поле из игрока
+        Field field = player.getField();
         int result;
-        field = player.getField();
         do {
+            //  если надо, то обновляем вывод поля
             if (!field.isShowShip()) view.drawFields(fieldAuto, fieldManual);
 
+            // если игрок умеет выдавать координаты то спрашиваем их
             if (player.isCanReturnCoordinate()) {
                 firePoint = player.getShootCoordinate();
-            } else {
-                while (view.isCoorinateReady()) {
-                    firePoint = view.getShotCoordinate(player);
+            } else
+            // если нет, то ждём координаты от вьюхи, пока она не выставит флаг что они готовы
+            {
+                while (!view.isCoorinateReady()) {
                 }
+                firePoint = view.getShotCoordinate(player);
             }
 
-
-
+            // спрашиваем у поля - ну чё там ?
             result = field.fire(firePoint.x, firePoint.y);
-            view.showResultFire(result, firePoint.x, firePoint.y, player.getName());
+            // сообщаем игроку результат стрельбы, по идее можно слушателем сделать внутри поля
             player.sendFireResult(result);
-        } while ((result == Field.SHIP_SHOOT || result == Field.SHIP_FIRED) && !field.isGameOver());
+            // визуализация итога выстрела во вью
+            view.showResultFire(result, firePoint.x, firePoint.y, player.getName());
+        }
+        // ну и цикл пока не промахнётся или игра не закончится
+        while ((result == Field.SHIP_SHOOT || result == Field.SHIP_FIRED) && !field.isGameOver());
     }
 
 
-    //создаём объекты
+    /**
+     * создаём объекты
+     */
     private void initGame() {
+        // поле компьютера
         fieldAuto = CreateAndInitField(false, true);
+        // поле игрока
         fieldManual = CreateAndInitField(true, true);
+        // игрок компьютер
         playerAuto = new PlayerAutoFullStupid(fieldManual);
+        // игрок
         playerManual = new PlayerManual(fieldAuto);
 
+        // во вью размер передаём (ой ли... наоборот же)
         view.setFieldSize(maxX, maxY);
+        // имя
         playerManual.setName(view.getPlayerName());
-
+        // стартуем !
         view.startGame();
 
     }
 
+    /**
+     * Создаём  игровое поле  и расставляем корабли
+     * todo - подумать как запросить корабли  у view
+     * или переместить создание в объект игрока и там добавить признак кто корабли ставит
+     * view или игрок
+     *
+     * @param showShip    показывать корабли на поле
+     * @param showBlocked показывать
+     * @return созданное поле
+     */
+
     private Field CreateAndInitField(boolean showShip, boolean showBlocked) {
+        // новое поле
         Field field = new Field(maxX, maxY, shipConf.length);
+        // признаки
         field.setShowShip(showShip);
         field.setShowBlocked(showBlocked);
-
+        // генерим корабли
         for (int i = 0; i < shipConf.length; i++) {
             field.generateNewShipBySize(shipConf[i]);
         }
-
         return field;
     }
-
 
 }

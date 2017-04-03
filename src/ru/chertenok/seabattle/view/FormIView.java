@@ -15,6 +15,11 @@ public class FormIView extends JFrame implements IViewSeaBattle {
 
     @Override
     public void startGame() {
+        setSize(maxX * 100, maxY * 100);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setVisible(true);
 
     }
 
@@ -39,7 +44,7 @@ public class FormIView extends JFrame implements IViewSeaBattle {
     }
 
     @Override
-    public void setFieldSize(int maxX, int MaxY) {
+    public void setFieldSize(int maxX, int maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
     }

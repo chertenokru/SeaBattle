@@ -29,6 +29,7 @@ public class PlayerAutoFullStupid extends PlayerBase {
     public PlayerAutoFullStupid(Field field) {
         super(field, field.getSIZE_X(), field.getSIZE_Y());
         name = "Компьютер";
+        isCanReturnCoordinate = true;
     }
 
     /** Возвращает следующий выстрел компьютера

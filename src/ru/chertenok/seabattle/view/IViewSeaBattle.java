@@ -24,5 +24,5 @@ public interface IViewSeaBattle {
 
     Point getShotCoordinate(PlayerBase player);
 
-    boolean isCoorinateReady();
+    boolean isCoordinateReady();
 }

@@ -55,7 +55,7 @@ public class FormIView extends JFrame implements IViewSeaBattle {
     }
 
     @Override
-    public boolean isCoorinateReady() {
+    public boolean isCoordinateReady() {
         return false;
     }
 }

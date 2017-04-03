@@ -191,7 +191,7 @@ public class ConsoleIView implements IViewSeaBattle {
     }
 
     @Override
-    public boolean isCoorinateReady() {
+    public boolean isCoordinateReady() {
         return true;
     }
 

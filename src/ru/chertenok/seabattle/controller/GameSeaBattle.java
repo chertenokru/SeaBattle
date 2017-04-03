@@ -80,7 +80,7 @@ public class GameSeaBattle {
             } else
             // если нет, то ждём координаты от вьюхи, пока она не выставит флаг что они готовы
             {
-                while (!view.isCoorinateReady()) {
+                while (!view.isCoordinateReady()) {
                 }
                 firePoint = view.getShotCoordinate(player);
             }

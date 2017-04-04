@@ -9,18 +9,27 @@ import ru.chertenok.seabattle.view.IViewSeaBattle;
 import java.awt.*;
 
 
-/**
+/** Игровой класс
  */
 public class GameSeaBattle {
 
+
+
+
     // кол-во и размеры кораблей
     private final int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    // размер поля
     private final int maxX = 10;
     private final int maxY = 10;
+    // поле игрока 1
     private Field fieldAuto;
+    // поле игрока 2
     private Field fieldManual;
+    // игрок 1
     private PlayerBase playerManual;
+    // игрок 2
     private PlayerBase playerAuto;
+    // интерфейс к вьюхе
     private IViewSeaBattle view;
 
 
@@ -72,7 +81,7 @@ public class GameSeaBattle {
         int result;
         do {
             //  если надо, то обновляем вывод поля
-            if (!field.isShowShip()) view.drawFields(fieldAuto, fieldManual);
+            if (!field.isShowShip()) view.drawFields();
 
             // если игрок умеет выдавать координаты то спрашиваем их
             if (player.isCanReturnCoordinate()) {
@@ -109,13 +118,27 @@ public class GameSeaBattle {
         playerAuto = new PlayerAutoFullStupid(fieldManual);
         // игрок
         playerManual = new PlayerManual(fieldAuto);
+        //playerManual = new PlayerAutoFullStupid(fieldAuto);
 
         // во вью размер передаём (ой ли... наоборот же)
         view.setFieldSize(maxX, maxY);
         // имя
         playerManual.setName(view.getPlayerName());
         // стартуем !
-        view.startGame();
+        view.startGame(new IModelData() {
+                           @Override
+                           public Field getFiled(int num) {
+                               if (num == 1) return fieldAuto;
+                               else return fieldManual;
+                           }
+
+                           @Override
+                           public PlayerBase getPlayer(int num) {
+                               if (num == 1) return playerAuto;
+                               else return playerManual;
+                           }
+                       }
+        );
 
     }
 

@@ -1,5 +1,6 @@
 package ru.chertenok.seabattle.view;
 
+import ru.chertenok.seabattle.controller.IModelData;
 import ru.chertenok.seabattle.model.Field;
 import ru.chertenok.seabattle.model.PlayerBase;
 
@@ -26,12 +27,16 @@ public class ConsoleIView implements IViewSeaBattle {
     private int maxX;
     private int maxY;
 
+    private IModelData modelData;
+
     /**
      * Инициализация игры
      */
     @Override
-    public void startGame() {
-        System.out.println("Игра началась !");
+    public void startGame(IModelData modelData) {
+        this.modelData = modelData;
+        System.out.println("Игра началась !"
+        );
     }
 
     /**
@@ -47,20 +52,19 @@ public class ConsoleIView implements IViewSeaBattle {
     /**
      * отрисовка полей
      *
-     * @param field1 поле 1
-     * @param field2 поле 2
+     *
      */
     @Override
-    public void drawFields(Field field1, Field field2) {
+    public void drawFields() {
         System.out.println();
         for (int i = 0; i < maxY; i++) {
             if (i == 0) {
                 System.out.println("    1 2  3  4  5  6 7  8 9 10" + "              " + "    1 2  3  4  5  6 7  8 9 10");
                 System.out.println();
             }
-            drawLineField(field1, i);
+            drawLineField(modelData.getFiled(1), i);
             System.out.print("              ");
-            drawLineField(field2, i);
+            drawLineField(modelData.getFiled(2), i);
             System.out.println();
         }
     }

@@ -1,5 +1,6 @@
 package ru.chertenok.seabattle.view;
 
+import ru.chertenok.seabattle.controller.IModelData;
 import ru.chertenok.seabattle.model.Field;
 import ru.chertenok.seabattle.model.PlayerBase;
 
@@ -10,11 +11,11 @@ import java.awt.*;
  */
 public interface IViewSeaBattle {
 
-    void startGame();
+    void startGame(IModelData modelData);
 
     String getPlayerName();
 
-    void drawFields(Field field1, Field field2);
+    void drawFields();
 
     void showResultFire(int result, int x, int y, String playerName);
 

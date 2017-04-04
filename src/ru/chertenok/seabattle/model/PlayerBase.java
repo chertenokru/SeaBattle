@@ -23,7 +23,7 @@ public abstract class PlayerBase {
     /**Возвращает ссылку на поле игрока
      * @return поле игрока
      */
-    public Field getField() {
+    public Field getFieldToFire() {
         return field;
     }
 

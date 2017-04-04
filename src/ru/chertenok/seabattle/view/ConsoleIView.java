@@ -2,7 +2,6 @@ package ru.chertenok.seabattle.view;
 
 import ru.chertenok.seabattle.controller.IModelData;
 import ru.chertenok.seabattle.model.Field;
-import ru.chertenok.seabattle.model.PlayerBase;
 
 import java.awt.*;
 import java.util.Scanner;
@@ -62,9 +61,9 @@ public class ConsoleIView implements IViewSeaBattle {
                 System.out.println("    1 2  3  4  5  6 7  8 9 10" + "              " + "    1 2  3  4  5  6 7  8 9 10");
                 System.out.println();
             }
-            drawLineField(modelData.getFiled(1), i);
+            drawLineField(modelData.getMyField(1), i);
             System.out.print("              ");
-            drawLineField(modelData.getFiled(2), i);
+            drawLineField(modelData.getMyField(2), i);
             System.out.println();
         }
     }
@@ -124,7 +123,7 @@ public class ConsoleIView implements IViewSeaBattle {
      * вывод результата хода
      */
     @Override
-    public void showResultFire(int result, int x, int y, String playerName) {
+    public void showResultFire(int result, int x, int y, int playerNum) {
         String stringResult = "";
         switch (result) {
             case Field.EMPTY:
@@ -137,21 +136,21 @@ public class ConsoleIView implements IViewSeaBattle {
                 stringResult = "Убит !";
                 break;
         }
-        System.out.printf("%s сходил %d,%d  - %s \n", playerName, x + 1, y + 1, stringResult);
+        System.out.printf("%s сходил %d,%d  - %s \n", modelData.getPlayer(playerNum).getName(), x + 1, y + 1, stringResult);
     }
 
 
     @Override
-    public void showWinner(PlayerBase player) {
+    public void showWinner(int playerNum) {
         System.out.println();
         // если корабли проигравшей стороны скрыты, то показываем их
-        if (!player.getField().isShowShip()) {
-            player.getField().setShowShip(true);
-            //  drawFields();
+        if (!modelData.getFieldToFire(playerNum).isShowShip()) {
+            modelData.getFieldToFire(playerNum).setShowShip(true);
+            drawFields();
         }
         System.out.println();
         System.out.println("Ура! Ура! Ура! Ура! Ура! Ура! Ура! Ура! Ура! Ура! Ура! Ура!");
-        System.out.println(player.getName() + ", Вы потопили все корабли и победили ! \n Поздравляю !");
+        System.out.println(modelData.getPlayer(playerNum).getName() + ", Вы потопили все корабли и победили ! \n Поздравляю !");
     }
 
     @Override
@@ -161,7 +160,7 @@ public class ConsoleIView implements IViewSeaBattle {
     }
 
     @Override
-    public Point getShotCoordinate(PlayerBase player) {
+    public Point getShotCoordinate(int playerNum) {
         boolean res;
         int x = 0;
         int y = 0;
@@ -170,7 +169,7 @@ public class ConsoleIView implements IViewSeaBattle {
             res = true;
             try {
                 System.out.println();
-                System.out.println(player.getName() + ", укажите координаты X,Y через запятую ( 1-10,1-10 ):");
+                System.out.println(modelData.getPlayer(playerNum).getName() + ", укажите координаты X,Y через запятую ( 1-10,1-10 ):");
                 String[] s = scanner.next().split(",");
                 if (s.length > 1) {
                     x = Integer.parseInt(s[0]) - 1;
@@ -183,9 +182,9 @@ public class ConsoleIView implements IViewSeaBattle {
             if (!res) {
                 System.out.println();
                 System.out.print("Не допустимые значения координат!");
-            } else if (player.getField().getCell(x, y) == Field.EMPTY_SHOOT || player.getField().getCell(x, y) == Field.SHIP_SHOOT) {
+            } else if (modelData.getMyField(playerNum).getCell(x, y) == Field.EMPTY_SHOOT || modelData.getMyField(playerNum).getCell(x, y) == Field.SHIP_SHOOT) {
                 System.out.println();
-                System.out.print(player.getName() + ", сюда уже стреляли!");
+                System.out.print(modelData.getPlayer(playerNum).getName() + ", сюда уже стреляли!");
                 res = false;
             }
 
@@ -195,7 +194,7 @@ public class ConsoleIView implements IViewSeaBattle {
     }
 
     @Override
-    public boolean isCoordinateReady() {
+    public boolean isCoordinateReady(int fieldNum) {
         return true;
     }
 

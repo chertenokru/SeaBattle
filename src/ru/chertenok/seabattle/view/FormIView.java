@@ -2,12 +2,9 @@ package ru.chertenok.seabattle.view;
 
 import ru.chertenok.seabattle.controller.IModelData;
 import ru.chertenok.seabattle.model.Field;
-import ru.chertenok.seabattle.model.PlayerBase;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -29,6 +26,7 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
 
     private int x = 0;
     private int y = 0;
+    private int fieldClickNum = 0;
     private boolean isCoordReady = false;
 
     @Override
@@ -48,8 +46,8 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
         Color color = getBackground();
         if (modelData == null) return;
         g.clearRect(0, 0, getWidth(), getHeight());
-        DrawField(g, modelData.getFiled(1), LEFT_MARGIN_1, TOP_MARGIN);
-        DrawField(g, modelData.getFiled(2), LEFT_MARGIN_2, TOP_MARGIN);
+        DrawField(g, modelData.getMyField(1), LEFT_MARGIN_1, TOP_MARGIN);
+        DrawField(g, modelData.getMyField(2), LEFT_MARGIN_2, TOP_MARGIN);
 
 
     }
@@ -89,8 +87,8 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
             }
             g.setColor(Color.BLACK);
         g.setFont(new Font("Tahome", Font.BOLD, 15));
-            g.drawString("X : "+this.x,10,10);
-        g.drawString("Y : "+ this.y,10,30);
+        g.drawString("X : " + this.x, 290, 50);
+        g.drawString("Y : " + this.y, 90, 50);
 
     }
 
@@ -106,13 +104,13 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
 
 
     @Override
-    public void showResultFire(int result, int x, int y, String playerName) {
+    public void showResultFire(int result, int x, int y, int playerNum) {
         repaint();
 
     }
 
     @Override
-    public void showWinner(PlayerBase player) {
+    public void showWinner(int playerNum) {
 
     }
 
@@ -123,13 +121,16 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
     }
 
     @Override
-    public Point getShotCoordinate(PlayerBase player) {
-        return null;
+    public Point getShotCoordinate(int fieldNum) {
+        Point p = new Point(x - 1, y - 1);
+        fieldClickNum = -1;
+
+        return p;
     }
 
     @Override
-    public boolean isCoordinateReady() {
-        return false;
+    public boolean isCoordinateReady(int fieldNum) {
+        return (fieldNum == this.fieldClickNum);
     }
 
 
@@ -142,21 +143,22 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
         int cell_y = -1;
         int fieldNum = -1;
         // определяем куда кликнули
-        if (y>=TOP_MARGIN && y<=TOP_MARGIN+(maxX*CELL_SIZE)) {
+        if (y >= TOP_MARGIN && y <= TOP_MARGIN + ((maxX + 1) * CELL_SIZE)) {
             cell_y = (y - TOP_MARGIN)/CELL_SIZE;
         }
 
-        if (x>=LEFT_MARGIN_1 && x<=LEFT_MARGIN_1+(maxX*CELL_SIZE)) {
+        if (x >= LEFT_MARGIN_1 && x <= LEFT_MARGIN_1 + ((maxX + 1) * CELL_SIZE)) {
             fieldNum = 1;
             cell_x = (x - LEFT_MARGIN_1)/CELL_SIZE;
-        } else
-        if (x>=LEFT_MARGIN_2 && x<=LEFT_MARGIN_2+(maxX*CELL_SIZE)) {
+        } else if (x >= LEFT_MARGIN_2 && x <= LEFT_MARGIN_2 + ((maxX + 1) * CELL_SIZE)) {
             fieldNum = 2;
             cell_x = (x - LEFT_MARGIN_2)/CELL_SIZE;
         }
 
-        if (x>0 && y>0 && fieldNum>0) {
-            this.x = x; this.y = y;
+        if (cell_x > 0 && cell_y > 0 && fieldNum > 0) {
+            this.x = cell_x;
+            this.y = cell_y;
+            fieldClickNum = fieldNum;
             repaint();
         }
 
@@ -164,29 +166,6 @@ public class FormIView extends JFrame implements IViewSeaBattle,MouseListener {
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        int x = mouseEvent.getX();
-        int y = mouseEvent.getY();
-        int cell_x = -1;
-        int cell_y = -1;
-        int fieldNum = -1;
-        // определяем куда кликнули
-        if (y>=TOP_MARGIN && y<=TOP_MARGIN+(maxX*CELL_SIZE)) {
-            cell_y = (y - TOP_MARGIN)/CELL_SIZE;
-        }
-
-        if (x>=LEFT_MARGIN_1 && x<=LEFT_MARGIN_1+(maxX*CELL_SIZE)) {
-            fieldNum = 1;
-            cell_x = (x - LEFT_MARGIN_1)/CELL_SIZE;
-        } else
-        if (x>=LEFT_MARGIN_2 && x<=LEFT_MARGIN_2+(maxX*CELL_SIZE)) {
-            fieldNum = 2;
-            cell_x = (x - LEFT_MARGIN_2)/CELL_SIZE;
-        }
-
-        if (x>0 && y>0 && fieldNum>0) {
-            this.x = x; this.y = y;
-            repaint();
-        }
 
     }
 

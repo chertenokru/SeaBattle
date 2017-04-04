@@ -13,25 +13,17 @@ import java.awt.*;
  */
 public class GameSeaBattle {
 
-
-
-
     // кол-во и размеры кораблей
     private final int[] shipConf = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
     // размер поля
     private final int maxX = 10;
     private final int maxY = 10;
     // поле игрока 1
-    private Field fieldAuto;
-    // поле игрока 2
-    private Field fieldManual;
-    // игрок 1
-    private PlayerBase playerManual;
-    // игрок 2
-    private PlayerBase playerAuto;
+    private PlayerBase[] player = new PlayerBase[2];
+    // интерфейс к данным
+    private ModelData modelData = new ModelData();
     // интерфейс к вьюхе
     private IViewSeaBattle view;
-
 
     /**
      * Конструктор и сразу запускает игровой цикл     *
@@ -44,7 +36,6 @@ public class GameSeaBattle {
         startGame();
     }
 
-
     /**
      * игровой цикл
      */
@@ -54,19 +45,19 @@ public class GameSeaBattle {
         // игровой цикл
         do {
             // ходы игрока пока не промахнется
-            playerTurn(playerManual);
+            playerTurn(0);
 
             // если игрок не выиграл
-            if (!fieldAuto.isGameOver()) {
-                // ходы компьютера пока не промахнется
-                playerTurn(playerAuto);
+            if (!modelData.getMyField(0).isGameOver()) {
+                // ходы след игрока
+                playerTurn(1);
             }
-        } while (!fieldAuto.isGameOver() && !fieldManual.isGameOver());
+        } while (!modelData.getMyField(0).isGameOver() && !modelData.getMyField(1).isGameOver());
 
-        if (fieldAuto.isGameOver()) {
-            view.showWinner(playerManual);
+        if (modelData.getMyField(0).isGameOver()) {
+            view.showWinner(1);
         } else {
-            view.showWinner(playerAuto);
+            view.showWinner(0);
         }
 
     }
@@ -74,71 +65,59 @@ public class GameSeaBattle {
     /**
      * ход переданного  параметром игрока
      */
-    private void playerTurn(PlayerBase player) {
-        Point firePoint = new Point(0, 0);
+    private void playerTurn(int playerNum) {
+        Point firePoint;
         // вытаскиваем поле из игрока
-        Field field = player.getField();
+        Field field = player[playerNum].getFieldToFire();
         int result;
         do {
             //  если надо, то обновляем вывод поля
             if (!field.isShowShip()) view.drawFields();
 
             // если игрок умеет выдавать координаты то спрашиваем их
-            if (player.isCanReturnCoordinate()) {
-                firePoint = player.getShootCoordinate();
+            if (player[playerNum].isCanReturnCoordinate()) {
+                firePoint = player[playerNum].getShootCoordinate();
             } else
             // если нет, то ждём координаты от вьюхи, пока она не выставит флаг что они готовы
             {
-                while (!view.isCoordinateReady()) {
+                while (!view.isCoordinateReady(playerNum)) {
                 }
-                firePoint = view.getShotCoordinate(player);
+                firePoint = view.getShotCoordinate(playerNum);
             }
 
             // спрашиваем у поля - ну чё там ?
             result = field.fire(firePoint.x, firePoint.y);
             // сообщаем игроку результат стрельбы, по идее можно слушателем сделать внутри поля
-            player.sendFireResult(result);
+            player[playerNum].sendFireResult(result);
             // визуализация итога выстрела во вью
-            view.showResultFire(result, firePoint.x, firePoint.y, player.getName());
+            view.showResultFire(result, firePoint.x, firePoint.y, playerNum);
         }
         // ну и цикл пока не промахнётся или игра не закончится
         while ((result == Field.SHIP_SHOOT || result == Field.SHIP_FIRED) && !field.isGameOver());
     }
-
 
     /**
      * создаём объекты
      */
     private void initGame() {
         // поле компьютера
-        fieldAuto = CreateAndInitField(false, true);
-        // поле игрока
-        fieldManual = CreateAndInitField(true, true);
-        // игрок компьютер
-        playerAuto = new PlayerAutoFullStupid(fieldManual);
-        // игрок
-        playerManual = new PlayerManual(fieldAuto);
-        //playerManual = new PlayerAutoFullStupid(fieldAuto);
+        Field field = CreateAndInitField(true, true);
+        // игрок 1 - компьютер
+        player[0] = new PlayerAutoFullStupid(field);
+
+        field = CreateAndInitField(false, true);
+
+        player[1] = new PlayerManual(field);
 
         // во вью размер передаём (ой ли... наоборот же)
         view.setFieldSize(maxX, maxY);
         // имя
-        playerManual.setName(view.getPlayerName());
-        // стартуем !
-        view.startGame(new IModelData() {
-                           @Override
-                           public Field getFiled(int num) {
-                               if (num == 1) return fieldAuto;
-                               else return fieldManual;
-                           }
 
-                           @Override
-                           public PlayerBase getPlayer(int num) {
-                               if (num == 1) return playerAuto;
-                               else return playerManual;
-                           }
-                       }
-        );
+        for (int i = 0; i < player.length; i++)
+            if (!player[i].isCanReturnCoordinate()) player[i].setName(view.getPlayerName());
+
+        // стартуем !
+        view.startGame(modelData);
 
     }
 
@@ -164,6 +143,26 @@ public class GameSeaBattle {
             field.generateNewShipBySize(shipConf[i]);
         }
         return field;
+    }
+
+    class ModelData implements IModelData {
+        @Override
+        synchronized public Field getMyField(int num) {
+            if (num == 1) return player[0].getFieldToFire();
+            else return player[1].getFieldToFire();
+        }
+
+        @Override
+        synchronized public Field getFieldToFire(int num) {
+            if (num == 1) return player[1].getFieldToFire();
+            else return player[0].getFieldToFire();
+        }
+
+        @Override
+        synchronized public PlayerBase getPlayer(int num) {
+            if (num == 1) return player[0];
+            else return player[1];
+        }
     }
 
 }

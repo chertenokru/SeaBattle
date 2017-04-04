@@ -1,8 +1,6 @@
 package ru.chertenok.seabattle.view;
 
 import ru.chertenok.seabattle.controller.IModelData;
-import ru.chertenok.seabattle.model.Field;
-import ru.chertenok.seabattle.model.PlayerBase;
 
 import java.awt.*;
 
@@ -17,13 +15,13 @@ public interface IViewSeaBattle {
 
     void drawFields();
 
-    void showResultFire(int result, int x, int y, String playerName);
+    void showResultFire(int result, int x, int y, int playerNum);
 
-    void showWinner(PlayerBase player);
+    void showWinner(int playerNum);
 
     void setFieldSize(int maxX, int MaxY);
 
-    Point getShotCoordinate(PlayerBase player);
+    Point getShotCoordinate(int fieldNum);
 
-    boolean isCoordinateReady();
+    boolean isCoordinateReady(int fieldNum);
 }

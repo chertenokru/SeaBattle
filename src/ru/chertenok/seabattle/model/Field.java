@@ -18,8 +18,8 @@ public class Field {
     private final int SIZE_X;
     private final int SIZE_Y;
     private final int MAX_SHIP_COUNT;
-    volatile private Ship[] ships;
-    volatile private int[][] cells;
+    private Ship[] ships;
+    private int[][] cells;
     private boolean showShip = true;
     private boolean showBlocked = false;
     private int shipCount = 0;
@@ -42,7 +42,7 @@ public class Field {
         this.showBlocked = showBlocked;
     }
 
-    synchronized public int getCell(int x, int y) {
+    public int getCell(int x, int y) {
         return cells[x][y];
     }
 

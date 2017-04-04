@@ -22,6 +22,8 @@ public class Main {
 //  графический режим не рабочий, только начал копать, отображает только форму и поля
 
 
+    // https://github.com/chertenokru/SeaBattle
+
     public static void main(String[] args) {
         IViewSeaBattle view;
         Scanner sc = new Scanner(System.in);

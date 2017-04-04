@@ -48,7 +48,7 @@ public class GameSeaBattle {
             playerTurn(0);
 
             // если игрок не выиграл
-            if (!modelData.getMyField(0).isGameOver()) {
+            if (!modelData.getFieldToFire(0).isGameOver()) {
                 // ходы след игрока
                 playerTurn(1);
             }
@@ -67,8 +67,13 @@ public class GameSeaBattle {
      */
     private void playerTurn(int playerNum) {
         Point firePoint;
+        try {
+            Thread.currentThread().sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // вытаскиваем поле из игрока
-        Field field = player[playerNum].getFieldToFire();
+        Field field = modelData.getFieldToFire(playerNum);
         int result;
         do {
             //  если надо, то обновляем вывод поля
@@ -81,6 +86,11 @@ public class GameSeaBattle {
             // если нет, то ждём координаты от вьюхи, пока она не выставит флаг что они готовы
             {
                 while (!view.isCoordinateReady(playerNum)) {
+                    try {
+                        Thread.currentThread().sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 firePoint = view.getShotCoordinate(playerNum);
             }
@@ -103,11 +113,12 @@ public class GameSeaBattle {
         // поле компьютера
         Field field = CreateAndInitField(true, true);
         // игрок 1 - компьютер
-        player[0] = new PlayerAutoFullStupid(field);
+        player[1] = new PlayerAutoFullStupid(field);
 
         field = CreateAndInitField(false, true);
 
-        player[1] = new PlayerManual(field);
+        player[0] = new PlayerManual(field);
+        //player[0] = new PlayerAutoFullStupid(field);
 
         // во вью размер передаём (ой ли... наоборот же)
         view.setFieldSize(maxX, maxY);
@@ -147,21 +158,21 @@ public class GameSeaBattle {
 
     class ModelData implements IModelData {
         @Override
-        synchronized public Field getMyField(int num) {
+         public Field getMyField(int num) {
             if (num == 1) return player[0].getFieldToFire();
             else return player[1].getFieldToFire();
         }
 
         @Override
-        synchronized public Field getFieldToFire(int num) {
+         public Field getFieldToFire(int num) {
             if (num == 1) return player[1].getFieldToFire();
             else return player[0].getFieldToFire();
         }
 
         @Override
-        synchronized public PlayerBase getPlayer(int num) {
-            if (num == 1) return player[0];
-            else return player[1];
+         public PlayerBase getPlayer(int num) {
+            if (num == 1) return player[1];
+            else return player[0];
         }
     }
 
